@@ -7,9 +7,10 @@ mostrar el contenido de las variables con el siguiente formato: Pérez, Juan. Ut
 de concatenación.
 */
 
-$nombre = 'Lautaro';
+$nombre = 'lautaro';
 $apellido = 'Alegria';
 
-echo $nombre . ', ' . $apellido
+// ucfirst() -> metodo que capitaliza el string
+echo ucfirst($nombre) . ', ' . ucfirst($apellido);
 
 ?>
