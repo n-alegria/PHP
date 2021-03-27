@@ -1,5 +1,7 @@
 <?php
 
+require_once "empleado.php";
+
 class Fabrica{
     # Atributos
     private $cantidadMaxima;
@@ -21,10 +23,6 @@ class Fabrica{
             array_push($this->empleados, $emp);
             $this->EliminarEmpleadosRepetidos();
             $retorno = true;
-            echo "Se agrego el empleado a la lista<br/>";
-        }
-        else{
-            echo "No hay lugar para ingresar un nuevo empleado<br/>";
         }
         return $retorno;
     }
@@ -54,11 +52,12 @@ class Fabrica{
 
     public function ToString(){
         $retorno = "Fabrica: $this->razonSocial<br/>";
-        $retorno .= "Cantidad de empleados: " . count($this->empleados) . "<br/>";
+        $retorno .= "Cantidad de empleados: " . count($this->empleados) . "<br/><br/>";
+        $retorno .= "Lista de empleados:<br/>";
         foreach ($this->empleados as $index => $empleado) {
             $retorno .= $empleado->ToString() . "<br/>";
         }
-
+        $retorno .= "<br/>";
         return $retorno;
     }
 }
