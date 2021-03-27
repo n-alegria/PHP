@@ -17,7 +17,7 @@ abstract class Persona
         $this->sexo = $sexo;
     }
 
-    # Propiedades
+    # Funciones como Propiedades
     public function GetApellido(){
         return $this->apellido;
     }

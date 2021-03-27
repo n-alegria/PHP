@@ -1,6 +1,26 @@
 <?php
 require_once "BACKEND/fabrica.php";
 
+echo "--> TEST EMPLEADO <--<br/><br/>";
+
+echo "--> Creo un empleado y muestro sus datos.<br/>";
+$empleadoTest = new Empleado("Lautaro", "Alegria", 11223344, "masculino", 101010, 25000, "mañana");
+echo "Nombre y Apellido: " . $empleadoTest->GetNombre() . " " . $empleadoTest->GetApellido() . "<br/>";
+echo "DNI: " . $empleadoTest->GetDni() . " - " . "Legajo: " . $empleadoTest->GetLegajo() . "<br/>";
+echo "Sexo: " . $empleadoTest->GetSexo() . "<br/>";
+echo "Sueldo: " . $empleadoTest->GetSueldo() . "<br/>";
+echo "Turno: " . $empleadoTest->GetTurno() . "<br/><br/>";
+
+echo "--> Empleado ToString().<br/>";
+echo $empleadoTest->ToString();
+
+echo "<br/>";
+echo "--> Funcion Hablar().<br/>";
+$idiomas = array("ingles", "Ruso", "frances");
+echo $empleadoTest->Hablar($idiomas);
+
+echo "<br/><br/>";
+echo "--> TEST FABRICA <--<br/><br/>";
 $fabrica = new Fabrica("TypeScript");
 
 $empleado1 = new Empleado("Juan", "Zar", 223344 , "masculino", 10000, 50000, "mañana");
@@ -11,7 +31,7 @@ $empleado5 = new Empleado("Diego", "Collazo", 223348 , "masculino", 10004, 70000
 $empleado6 = new Empleado("Zahira", "Barriento", 223349 , "femenino", 10005, 30000, "tarde");
 $empleadoRepetido = new Empleado("Juan", "Zar", 223344 , "masculino", 10000, 50000, "mañana");
 
-echo "--> Agrego empleados.<br/><br/>";
+echo "--> Agrego empleados.<br/>";
 $fabrica->AgregarEmpleado($empleado1);
 $fabrica->AgregarEmpleado($empleado2);
 $fabrica->AgregarEmpleado($empleado3);
@@ -20,7 +40,7 @@ $fabrica->AgregarEmpleado($empleadoRepetido);
 $fabrica->AgregarEmpleado($empleado5);
 $fabrica->AgregarEmpleado($empleado6);
 
-echo "--> Muestro los empleados.<br/><br/>";
+echo "--> Fabrica ToString().<br/><br/>";
 echo $fabrica->ToString();
 
 echo "--> Elimino empleados.<br/><br/>";
@@ -28,7 +48,7 @@ $fabrica->EliminarEmpleado($empleado1);
 $fabrica->EliminarEmpleado($empleado3);
 
 
-echo "--> Muestro los empleados<br/><br/>";
+echo "--> Fabrica ToString()<br/><br/>";
 echo $fabrica->ToString();
 
 ?>

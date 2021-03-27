@@ -15,7 +15,7 @@ class Empleado extends Persona{
         $this->turno = $turno;
     }
 
-    # Propiedades
+    # Funciones como Propiedades
     public function GetLegajo(){
         return $this->legajo;
     }
@@ -41,7 +41,7 @@ class Empleado extends Persona{
 
     public function ToString()
     {
-        return parent::ToString()." - $this->legajo - $this->sueldo - " . ucfirst($this->turno);
+        return parent::ToString(). " - " . $this->legajo - $this->sueldo . " - " . ucfirst($this->turno) . "<br/>";
     }
 }
 

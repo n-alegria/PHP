@@ -9,9 +9,9 @@ class Fabrica{
     private $razonSocial;
 
     # Constructor
-    public function __construct($razonSocial)
+    public function __construct($razonSocial, $cantidadMaxima = 5)
     {
-        $this->cantidadMaxima = 5;
+        $this->cantidadMaxima = $cantidadMaxima;
         $this->empleados = array();
         $this->razonSocial = $razonSocial;
     }
@@ -55,7 +55,7 @@ class Fabrica{
         $retorno .= "Cantidad de empleados: " . count($this->empleados) . "<br/><br/>";
         $retorno .= "Lista de empleados:<br/>";
         foreach ($this->empleados as $index => $empleado) {
-            $retorno .= $empleado->ToString() . "<br/>";
+            $retorno .= $empleado->ToString();
         }
         $retorno .= "<br/>";
         return $retorno;
