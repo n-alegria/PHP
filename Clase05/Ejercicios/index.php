@@ -9,9 +9,9 @@ $correo = isset($_POST['correo']) ? $_POST["correo"] : "error" ;
 $clave = isset($_POST['clave']) ? $_POST["clave"] : "error";
 
 $host = 'localhost';
-$user = 'id16596708_usuarios';
-$pass = 'DNI0>4ee]O^!7tkW';
-$base = 'id16596708_usuarios_test';
+$user = 'root';
+$pass = '';
+$base = 'usuarios_test';
 
 
 switch ($opcion){
