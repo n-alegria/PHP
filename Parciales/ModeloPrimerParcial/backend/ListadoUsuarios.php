@@ -7,7 +7,7 @@ require_once("./clases/Usuario.php");
 $parametro = isset($_GET["tabla"]) ? $_GET["tabla"] : "json";
 $arrayUsuarios = Usuario::TraerTodos();
 if ($arrayUsuarios !== null && count($arrayUsuarios) !== 0) {
-    if($parametro == 'mostrar') {
+    if(isset($_GET["tabla"])) {
         echo "<!DOCTYPE html>
         <html lang='es'>
         
@@ -53,7 +53,17 @@ if ($arrayUsuarios !== null && count($arrayUsuarios) !== 0) {
         </html>";
     }
     else{
-        echo json_encode($arrayUsuarios);
+        $arrayAux = array();
+        foreach($arrayUsuarios as $usuario){
+            $user = new stdClass();
+            $user->id = $usuario->id;
+            $user->nombre = $usuario->nombre;
+            $user->correo = $usuario->correo;
+            $user->id_perfil = $usuario->id_perfil;
+            $user->perfil = $usuario->perfil;
+            array_push($arrayAux, $user);
+        }
+        echo json_encode($arrayAux);
     }
     
 }

@@ -1,6 +1,7 @@
 <?php
+require_once('IBM.php');
 
-class Usuario
+class Usuario implements IBM
 {
     public $id;
     public $nombre;
@@ -92,9 +93,9 @@ class Usuario
         
         try{
             $pdo = new PDO('mysql:host=localhost;dbname=usuarios_test;charset=utf8', "root", "");
-            $cursor = $pdo->prepare("SELECT * FROM usuarios 
+            $cursor = $pdo->prepare("SELECT usuarios.id, correo, clave, nombre, id_perfil, descripcion FROM usuarios 
                                     INNER JOIN perfiles 
-                                    ON usuarios.id_perfil = perfiles.id");
+                                    ON perfiles.id = usuarios.id_perfil");
             $cursor->execute();
             while($registro = $cursor->fetch(PDO::FETCH_OBJ)){
                 $usuarioAux = new Usuario($registro->id, $registro->nombre, $registro->correo, $registro->clave, $registro->id_perfil, $registro->descripcion);
@@ -110,12 +111,12 @@ class Usuario
     public static function TraerUno($correo, $clave){
         try{
             $pdo = new PDO('mysql:host=localhost;dbname=usuarios_test;charset=utf8', "root", "");
-            $cursor = $pdo->prepare("SELECT * FROM usuarios 
+            $cursor = $pdo->prepare("SELECT usuarios.id, correo, clave, nombre, id_perfil, descripcion FROM usuarios 
                                     INNER JOIN perfiles 
                                     ON usuarios.id_perfil = perfiles.id
                                     WHERE correo = :correo AND clave = :clave");
-            $cursor->bindValue(":correo", $correo, PDO::PARAM_STR);
-            $cursor->bindValue(":clave", $clave, PDO::PARAM_STR);
+            $cursor->bindParam(":correo", $correo, PDO::PARAM_STR);
+            $cursor->bindParam(":clave", $clave, PDO::PARAM_STR);
             $cursor->execute();
             if($cursor->rowCount() > 0){
                 $registro = $cursor->fetch(PDO::FETCH_ASSOC);
@@ -129,5 +130,48 @@ class Usuario
             echo "Ocurrio un error: " . $e->getMessage() . "<br/>";
         }
         return $usuarioAux;
+    }
+
+    public function Modificar()
+    {
+        $retorno = false;
+        try{
+            $pdo = new PDO('mysql:host=localhost;dbname=usuarios_test;charset=utf8', "root", "");
+            $cursor = $pdo->prepare("UPDATE usuarios SET correo = :correo, clave = :clave, nombre = :nombre, id_perfil = :id_perfil
+                                    WHERE usuarios.id = :id");
+            $cursor->bindParam(":id", $this->id, PDO::PARAM_INT);
+            $cursor->bindParam(":correo", $this->correo, PDO::PARAM_STR);
+            $cursor->bindParam(":clave", $this->clave, PDO::PARAM_STR);
+            $cursor->bindParam(":nombre", $this->nombre, PDO::PARAM_STR);
+            $cursor->bindParam(":id_perfil", $this->id_perfil, PDO::PARAM_INT);
+            $cursor->execute();
+            if($cursor->rowCount() > 0){
+                $retorno = true;
+            }
+        }
+        catch(PDOException $e){
+            echo "Ocurrio un error: " . $e->getMessage() . "<br/>";
+        }
+        return $retorno;
+    }
+
+    public static function Eliminar($id)
+    {
+        $retorno = false;
+        try{
+            $pdo = new PDO('mysql:host=localhost;dbname=usuarios_test;charset=utf8', "root", "");
+            $cursor = $pdo->prepare("DELETE FROM usuarios
+                                    WHERE usuarios.id = :id");
+            $cursor->bindParam(":id", $id, PDO::PARAM_INT);
+            $cursor->execute();
+            if($cursor->rowCount() > 0){
+                $retorno = true;
+            }
+        }
+        catch(PDOException $e){
+            echo "Ocurrio un error: " . $e->getMessage() . "<br/>";
+        }
+
+        return $retorno;
     }
 }

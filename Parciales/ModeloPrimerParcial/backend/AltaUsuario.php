@@ -22,11 +22,11 @@ else{
     $usuario = new Usuario(null, $nombre, $correo, $clave, $id_perfil, null);
     if($usuario->Agregar()){
         $retornoJson->exito = true;
-        $retornoJson->mensaje = "Se agrego con exito al usuario.";
+        $retornoJson->mensaje = "Usuario agregado con exito.";
     }
     else{
         $retornoJson->exito = false;
-        $retornoJson->mensaje = "Ocurrio un error al agrregar el usuario.";
+        $retornoJson->mensaje = "Ocurrio un error al agregar el usuario.";
     }
 }
 var_dump(json_encode($retornoJson));
