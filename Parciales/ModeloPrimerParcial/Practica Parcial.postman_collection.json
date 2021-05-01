@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "57813740-da34-4c3c-a1e6-ff3b47eda5d6",
+		"name": "Practica Parcial",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AltaUsuarioJSON.php",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "correo",
+							"value": "soeldad@soledadl.com",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "nombre",
+							"value": "soledad",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/AltaUsuarioJSON.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"AltaUsuarioJSON.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VerificarUsuario.php",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "usuario_json",
+							"value": "{\"correo\":\"pedro@pedro.com\",\"clave\":123}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/VerificarUsuario.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"VerificarUsuario.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListadoUsuarios.php",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/ListadoUsuarios.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"ListadoUsuarios.php"
+					],
+					"query": [
+						{
+							"key": "tabla",
+							"value": "mostrar",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AltaUsuario.php",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "correo",
+							"value": "zelda@zelda.com",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "zelda123",
+							"type": "text"
+						},
+						{
+							"key": "nombre",
+							"value": "zelda",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/AltaUsuario.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"AltaUsuario.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListadoUsuariosJSON",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/ListadoUsuariosJSON.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"ListadoUsuariosJSON.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModificarUsuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "usuario_json",
+							"value": "{\"id\":80,\"correo\":\"enigma@enigma.com\",\"clave\":\"enigma123\",\"nombre\":\"enigma\",\"id_perfil\":\"2\"}",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/ModificarUsuario.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"ModificarUsuario.php"
+					],
+					"query": [
+						{
+							"key": "usuario_json",
+							"value": "{\"id\":8,\"correo\":\"enigma@enigma.com\",\"clave\":\"enigma123\",\"id_perfil\":\"2\"}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EliminarUsuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "8",
+							"type": "text"
+						},
+						{
+							"key": "accion",
+							"value": "mostrar",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/EliminarUsuario.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"EliminarUsuario.php"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AltaEmpleado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "jorge",
+							"type": "text"
+						},
+						{
+							"key": "correo",
+							"value": "carlos@carlos.com",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "carlos321",
+							"type": "text"
+						},
+						{
+							"key": "id_perfil",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "foto",
+							"type": "file",
+							"src": "/C:/Users/Nirmuski/Downloads/images.jpg"
+						},
+						{
+							"key": "sueldo",
+							"value": "15000",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/AltaEmpleado.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"AltaEmpleado.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListadoEmpleados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/ListadoEmpleados.php?tabla=mostrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"ListadoEmpleados.php"
+					],
+					"query": [
+						{
+							"key": "tabla",
+							"value": "mostrar"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModificarEmpleado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "empleado_json",
+							"value": "{\"id\":2,\"nombre\":\"Luz\",\"correo\":\"luz@luz.com\", \"clave\":\"luz123\", \"id_perfil\":2,\"sueldo\":9500,\"pathFoto\":\"../backend/empleados/fotos/luz.202422.jpg\"}",
+							"type": "text"
+						},
+						{
+							"key": "foto",
+							"type": "file",
+							"src": "/C:/Users/Nirmuski/Downloads/romeros.jpg",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/PHP/Parciales/ModeloPrimerParcial/backend/ModificarEmpleado.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"PHP",
+						"Parciales",
+						"ModeloPrimerParcial",
+						"backend",
+						"ModificarEmpleado.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EliminarEmpleado",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}
