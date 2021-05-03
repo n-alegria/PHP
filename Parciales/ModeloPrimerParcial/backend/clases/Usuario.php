@@ -108,15 +108,16 @@ class Usuario implements IBM
         return $arrayUsuarios;
     }
 
-    public static function TraerUno($correo, $clave){
+    public static function TraerUno($params){
         try{
             $pdo = new PDO('mysql:host=localhost;dbname=usuarios_test;charset=utf8', "root", "");
             $cursor = $pdo->prepare("SELECT usuarios.id, correo, clave, nombre, id_perfil, descripcion FROM usuarios 
                                     INNER JOIN perfiles 
                                     ON usuarios.id_perfil = perfiles.id
                                     WHERE correo = :correo AND clave = :clave");
-            $cursor->bindParam(":correo", $correo, PDO::PARAM_STR);
-            $cursor->bindParam(":clave", $clave, PDO::PARAM_STR);
+            $datosJson = json_decode($params);
+            $cursor->bindParam(":correo", $datosJson->correo, PDO::PARAM_STR);
+            $cursor->bindParam(":clave", $datosJson->clave, PDO::PARAM_STR);
             $cursor->execute();
             if($cursor->rowCount() > 0){
                 $registro = $cursor->fetch(PDO::FETCH_ASSOC);
