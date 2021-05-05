@@ -119,10 +119,9 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
         return $retorno;
     }
 
-    public function Existe()
+    public function Existe($listado)
     {
         $retorno = false;
-        $listado = ProductoEnvasado::Traer();
         foreach($listado as $item){
             if($item->nombre == $this->nombre && $item->origen == $this->origen){
                 $retorno = true;
@@ -138,9 +137,11 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
         if (file_exists($path)) {
             $archivo = fopen($path, "a");
             if ($archivo) {
-                $cadena = $this->ToJSON() . " - " . ".productosBorrados/" . $this->id . $this->nombre . "borrado" . date('His') . pathinfo($this->pathFoto, PATHINFO_EXTENSION);
+                $this->pathFoto ="./productosBorrados/" . $this->id . $this->nombre . "borrado" . date('His') . pathinfo($this->pathFoto, PATHINFO_EXTENSION); 
+                $cadena = $this->ToJSON();
                 if(fwrite($archivo, $cadena . "\r\n")){
-                    move_uploaded_file($this->pathFoto, ".productosBorrados/" . $this->id . $this->nombre . "borrado" . date('His') . pathinfo($this->pathFoto, PATHINFO_EXTENSION));
+                    copy($this->pathFoto, "./productosBorrados/" . $this->id . $this->nombre . "borrado" . date('His') . pathinfo($this->pathFoto, PATHINFO_EXTENSION));
+                    unlink($this->pathFoto);
                 }
             }
             fclose($archivo);
