@@ -12,7 +12,7 @@ class Producto
     }
 
     /* método de instancia ToJSON(), que retornará los datos de la instancia (en una cadena
-con formato JSON). */
+    con formato JSON). */
     public function ToJSON()
     {
         $retornoJson = new stdClass();
@@ -65,43 +65,51 @@ con formato JSON). */
     /* Método de clase VerificarProductoJSON($producto), que recorrerá el array obtenido del método TraerJSON y
     retornará un JSON que contendrá: existe(bool) y mensaje(string).
     Si el producto está registrado (comparar por nombre y origen), retornará true y el mensaje indicará cuantos
-    productos están registrados con el mismo origen del producto recibido por parámetro. Caso contrario, retornará
-    false, y el/los nombres de la/las productos más populares (mayor cantidad de apariciones). */
+    productos están registrados con el mismo origen del producto recibido por parámetro. 
+    Caso contrario, retornará false, y el/los nombres de la/las productos más populares (mayor cantidad de apariciones). */
     public static function VerificarProductoJSON($producto)
     {
+        $listado = Producto::TraerJson();
+
         $retornoJson = new stdClass();
         $retornoJson->exito = false;
-        $retornoJson->mensaje = "No se pudo guardar en el archivo";
+        $retornoJson->mensaje = "No hay producto con coincidencias";
 
-        $arrayProductos = Producto::TraerJson();
-
-        foreach($arrayProductos as $item)
-        {
-            if($item->nombre == $producto->nombre && $item->origen == $producto->origen)
+        if($listado !== null && $listado !== 0){
+            $countOrigen = 0;
+            foreach($listado as $item)
             {
-                $retornoJson->exito = true;
-                break;
-            }
-        }
-
-        $cantidadOrigen = 0;
-        if($arrayProductos !== null && $arrayProductos !== 0){
-            if($retornoJson->exito = true){
-                foreach($arrayProductos as $item)
-                {
-                    if($item->origen == $producto->origen)
-                    {
+                if($item->origen == $producto->origen){
+                    $countOrigen++;
+                    if($item->nombre == $producto->nombre){
                         $retornoJson->exito = true;
-                        $cantidadOrigen ++;
                     }
                 }
-                $retornoJson->mensaje = "El producto '" . $producto->nombre . "' se encuentra '" . $cantidadOrigen . "' veces en el listado.";
+            }
+            # Si coincide 'nombre' y 'origen' entra aca y muestra cantidad de productos por 'origen'
+            if($retornoJson->exito == true){
+                $retornoJson->mensaje = "Se encontraron '" . $countOrigen . "' productos del mismo origen.";
+            }
+            # De lo contrario entra aca y muestra cuales son los de mayor cantiadad por 'nombre'
+            else{
+                $arrayValores = array();
+                foreach ($listado as $item) {
+                    array_push($arrayValores, $item->nombre);
+                }
+                $arrayNombres = array_count_values($arrayValores);
+                // var_dump($arrayNombres);
+                // echo "Maximo: " . max($arrayNombres);
+                $retornoJson->mensaje = "Listado de los mas populares: ";
+                foreach($arrayNombres as $key => $cantidad){
+                    if(max($arrayNombres) == $cantidad){
+                        $retornoJson->mensaje .= $key . ", ";
+                    }
+                }
             }
         }
         else{
-            $retornoJson->mensaje = "EL listado se encuentra vacio.";
+            $retornoJson->mensaje = "El listado se encuentra vacio.";
         }
-
         return json_encode($retornoJson);
     }
 }

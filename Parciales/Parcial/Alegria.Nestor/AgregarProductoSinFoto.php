@@ -1,12 +1,15 @@
-<?php
+<?php # -> OK <-
+
+/* AgregarProductoSinFoto.php: 
+Se recibe por POST el parámetro producto_json (codigoBarra, nombre, origen y precio), en formato de cadena JSON. 
+Se invocará al método Agregar.
+Se retornará un JSON que contendrá: éxito(bool) y mensaje(string) indicando lo acontecido. */
 
 require_once('./clases/ProductoEnvasado.php');
 
+$producto_json = isset($_POST["producto_json"]) ? json_decode($_POST["producto_json"]) : null;
 
-$producto_json = isset($_POST["producto_json"]) ? $_POST["producto_json"] : null;
-$registro = json_decode($producto_json);
-
-$producto = new ProductoEnvasado($registro->nombre, $registro->origen, null, $registro->codigoBarra, $registro->precio, null);
+$producto = new ProductoEnvasado($producto_json->nombre, $producto_json->origen, null, $producto_json->codigoBarra, $producto_json->precio, null);
 
 $retornoJson = new stdClass();
 $retornoJson->exito = false;

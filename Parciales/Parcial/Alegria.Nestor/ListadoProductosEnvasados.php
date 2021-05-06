@@ -1,7 +1,11 @@
-<?php
-/* Listado.php: 
-Se mostrará el listado completo de los juguetes (obtenidos de la base de datos) en una tabla (con cabecera). 
-Invocar al método Traer. Nota: preparar la tabla para que muestre la imagen de la foto (si es que la tiene). */
+<?php # -> OK <-
+
+/* ListadoProductosEnvasados.php: (GET) 
+Se mostrará el listado completo de los productos envasados (obtenidos de la base de datos) en una tabla (HTML con cabecera). 
+Invocar al método Traer.
+Nota: Si se recibe el parámetro tabla con el valor mostrar, retornará los datos en una tabla (HTML con cabecera),
+preparar la tabla para que muestre la imagen, si es que la tiene.
+Si el parámetro no es pasado o no contiene el valor mostrar, retornará el array de objetos con formato JSON. */
 
 require_once('./clases/ProductoEnvasado.php');
 $tabla = isset($_GET["tabla"]) ? $_GET["tabla"] : null;
@@ -51,10 +55,11 @@ if($listado !== null or count($listado) !== 0){
 <body>";
     }
     else{
-        foreach($listado as $producto){
-            echo $producto->ToJSON() . "\n";
-        }
+        echo json_encode($listado);
     }
+}
+else{
+    echo "El listado esta vacio";
 }
 
 ?>

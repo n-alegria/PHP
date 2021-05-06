@@ -1,2 +1,12 @@
-{"nombre":"libro","origen":"Argentina"}
-{"nombre":"televisor","origen":"Uruguay"}
+{ "nombre": "televisor", "origen": "Uruguay" }
+{ "nombre": "dvd", "origen": "Uruguay" } 
+{ "nombre": "dvd", "origen": "Japon" } 
+{ "nombre": "dvd", "origen": "Canada" } 
+{ "nombre": "dvd", "origen": "Australia" } 
+{ "nombre": "heladera", "origen": "Uruguay" } 
+{ "nombre": "celular", "origen": "Uruguay" } 
+{ "nombre": "celular", "origen": "Argentina" } 
+{ "nombre": "celular", "origen": "Chile" } 
+{ "nombre": "celular", "origen": "Colombia" }
+{"nombre":"termo","origen":"Argentina"}
+{"nombre":"termo","origen":"Argentina"}

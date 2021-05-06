@@ -1,4 +1,4 @@
-<?php
+<?php # -> OK <-
 
 /* ProductoEnvasado.php.
 Crear, en ./clases, la clase ProductoEnvasado (hereda de producto) con atributos
@@ -8,6 +8,7 @@ instancia ToJSON(), que retornará los datos de la instancia (en una cadena con 
 require_once('./clases/Producto.php');
 require_once('./clases/IParte1.php');
 require_once('./clases/IParte2.php');
+require_once('./clases/IParte3.php');
 require_once('./clases/AccesoDatos.php');
 
 class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
@@ -20,10 +21,10 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
     public function __construct($nombre = null, $origen = null, $id = null, $codigoBarra = null, $precio = null, $pathFoto = null)
     {
         parent::__construct($nombre, $origen);
-        $this->id = $id != null ? $id : "";
-        $this->codigoBarra = $codigoBarra != null ? $codigoBarra : "";
-        $this->precio = $precio != null ? $precio : "";
-        $this->pathFoto = $pathFoto != null ? $pathFoto : "";
+        $this->id = $id;
+        $this->codigoBarra = $codigoBarra;
+        $this->precio = $precio;
+        $this->pathFoto = $pathFoto;
     }
 
     public function ToJSON()
@@ -39,16 +40,17 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
 
     public function Agregar()
     {
+        
         $retorno = false; 
         try{
             $pdo = AccesoDatos::DameUnObjetoAcceso();
             $cursor = $pdo->RetornarConsulta("INSERT INTO productos (codigo_barra, nombre, origen, precio, foto) 
-                                            :codigo_barra, :nombre, :origen, :precio, :foto)");
+                                            VALUES (:codigo_barra, :nombre, :origen, :precio, :foto)");
             $cursor->bindParam(":codigo_barra", $this->codigoBarra, PDO::PARAM_INT);
             $cursor->bindParam(":nombre", $this->nombre, PDO::PARAM_STR);
             $cursor->bindParam(":origen", $this->origen, PDO::PARAM_STR);
-            $cursor->bindParam(":foto", $this->pathFoto, PDO::PARAM_STR);
             $cursor->bindParam(":precio", $this->precio, PDO::PARAM_INT);
+            $cursor->bindParam(":foto", $this->pathFoto, PDO::PARAM_STR);
             $cursor->execute();
             if($cursor->rowCount() > 0){
                 $retorno = true;
@@ -62,7 +64,6 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
 
     public static function Traer(){
         $arrayProductos = array();
-        
         try{
             $pdo = AccesoDatos::DameUnObjetoAcceso();
             $cursor = $pdo->RetornarConsulta("SELECT * FROM productos");
@@ -80,8 +81,8 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
 
     public static function Eliminar($id)
     {
+        $retorno = false;
         try{
-            $retorno = false;
             $pdo = AccesoDatos::DameUnObjetoAcceso();
             $cursor = $pdo->RetornarConsulta("DELETE FROM productos WHERE id = :id");
             $cursor->bindParam(":id", $id, PDO::PARAM_INT);
@@ -98,15 +99,15 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
 
     public function Modificar()
     {
+        $retorno = false;
         try{
-            $retorno = false;
             $pdo = AccesoDatos::DameUnObjetoAcceso();
             $cursor = $pdo->RetornarConsulta("UPDATE productos SET nombre = :nombre, origen = :origen, codigo_barra = :codigo_barra, precio = :precio, foto = :foto WHERE id = :id");
-            $cursor->bindParam(":codigo_barra", $this->codigoBarra, PDO::PARAM_STR);
+            $cursor->bindParam(":codigo_barra", $this->codigoBarra, PDO::PARAM_INT);
             $cursor->bindParam(":nombre", $this->nombre, PDO::PARAM_STR);
             $cursor->bindParam(":origen", $this->origen, PDO::PARAM_STR);
             $cursor->bindParam(":foto", $this->pathFoto, PDO::PARAM_STR);
-            $cursor->bindParam(":precio", $this->precio, PDO::PARAM_STR);
+            $cursor->bindParam(":precio", $this->precio, PDO::PARAM_INT);
             $cursor->bindParam(":id", $this->id, PDO::PARAM_INT);
             $cursor->execute();
             if($cursor->rowCount() > 0){
@@ -131,20 +132,58 @@ class ProductoEnvasado extends Producto implements IParte1, IParte2, IParte3{
         return $retorno;
     }
 
+    /* GuardarEnArchivo: escribirá en un archivo de texto (./archivos/productos_envasados_borrados.txt) toda
+    la información del producto envasado más la nueva ubicación de la foto. 
+    La foto se moverá al subdirectorio “./productosBorrados/”, con el nombre formado por el id punto nombre punto 'borrado'
+    punto hora, minutos y segundos del borrado (Ejemplo: 688.tomate.borrado.105905.jpg). */
     public function GuardarEnArchivo()
     {
-        $path = "./archivos/productos_envasados_borrados.txt";
-        if (file_exists($path)) {
-            $archivo = fopen($path, "a");
+        $retorno = false;
+        $pathTxtBorrados = "./archivos/productos_envasados_borrados.txt";
+        $pathDestino = "./productosBorrados/$this->id.$this->nombre.borrado." . date('His') . "." . pathinfo($this->pathFoto, PATHINFO_EXTENSION); 
+        if (file_exists($pathTxtBorrados)) {
+            $archivo = fopen($pathTxtBorrados, "a");
             if ($archivo) {
-                $this->pathFoto ="./productosBorrados/" . $this->id . $this->nombre . "borrado" . date('His') . pathinfo($this->pathFoto, PATHINFO_EXTENSION); 
-                $cadena = $this->ToJSON();
-                if(fwrite($archivo, $cadena . "\r\n")){
-                    copy($this->pathFoto, "./productosBorrados/" . $this->id . $this->nombre . "borrado" . date('His') . pathinfo($this->pathFoto, PATHINFO_EXTENSION));
+                if(fwrite($archivo, $this->ToJSON() . "\r\n")){
+                    $retorno = true;
+                    copy($this->pathFoto, $pathDestino);
                     unlink($this->pathFoto);
                 }
             }
             fclose($archivo);
         }
+        return $retorno;
+    }
+
+    public static function MostrarBorradosJSON()
+    {
+        $arrayProductos = array();
+        $path = "./archivos/productos_eliminados.json";
+        if (file_exists($path)) {
+            $archivo = fopen($path, "r");
+            if ($archivo) {
+                while (!feof($archivo)) {
+                    $lineaLeida = trim(fgets($archivo));
+                    if ($lineaLeida > 0) {
+                        $productoJson = json_decode($lineaLeida);
+                        $productoAux = new Producto($productoJson->nombre, $productoJson->origen);
+                        array_push($arrayProductos, $productoAux);
+                    }
+                }
+            }
+            fclose($archivo);
+        }
+        return $arrayProductos;
+    }
+
+    public static function MostrarModificados(){
+        $directorio = opendir('./productosModificados/');
+        $pathsImagenes = array();
+        while (($file = readdir($directorio))) {
+            if($file !== '.' && $file !== ".."){
+                array_push($pathsImagenes, $file);
+            }
+        }
+        return $pathsImagenes;
     }
 }
