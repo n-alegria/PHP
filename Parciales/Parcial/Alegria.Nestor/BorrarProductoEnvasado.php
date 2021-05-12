@@ -1,4 +1,4 @@
-<?php
+<?php # -> OK <-
 
 /* BorrarProductoEnvasado.php:
 Se recibe el parámetro producto_json (id, codigoBarra, nombre, origen, precio y
@@ -9,41 +9,24 @@ Si se invoca por GET (sin parámetros), se mostrarán en una tabla (HTML) la inf
 envasados borrados y sus respectivas imagenes. */
 
 require_once('./clases/ProductoEnvasado.php');
-$producto_json = isset($_POST["producto_json"]) ? $_POST["producto_json"] : null;
-
-$productoAux = json_decode($producto_json);
+$producto_json = isset($_POST["producto_json"]) ? json_decode($_POST["producto_json"]) : null;
 
 $retornoJson = new stdClass();
 $retornoJson->exito = false;
 $retornoJson->mensaje = "No se pudo eliminar en la base de datos";
 
-if(ProductoEnvasado::Eliminar($productoAux->id)){
-    $retornoJson->exito = true;
-    $retornoJson->mensaje = "Se elimino de la base de datos.";
-    $producto = new ProductoEnvasado($productoAux->nombre, $productoAux->origen, $productoAux->id, $productoAux->codigoBarra, $productoAux->precio, $productoAux->pathFoto);
-    if($producto->GuardarEnArchivo()){
-        $retornoJson->mensaje .= " Y se almaceno en el archivo con exito";
+if(!isset($_POST["producto_json"])){
+    $listadoDeBorrados = array();
+    $archivo = fopen('./archivos/productos_envasados_borrados.txt', 'r');
+    while(!feof($archivo)){
+        $lineaLeida = trim(fgets($archivo));
+        if ($lineaLeida > 0) {
+            $productoJson = json_decode($lineaLeida);
+            $productoAux = new ProductoEnvasado($productoJson->nombre, $productoJson->origen, $productoJson->id, $productoJson->codigoBarra, $productoJson->precio, $productoJson->pathFoto);
+            array_push($listadoDeBorrados, $productoAux);
+        }
     }
-    else{
-        $retornoJson->mensaje .= " Ocurrio un error al guardar en el archivo";
-    }
-}
-else{
-    $retornoJson->mensaje = ". El 'id' ingresado no existe";
-}
-
-$archivo = fopen('./archivos/productos_envasados_borrados.txt', 'r');
-$listadoDeBorrados = array();
-while(!feof($archivo)){
-    $linea = trim(fgets($archivo));
-    if ($lineaLeida > 0) {
-        $productoJson = json_decode($lineaLeida);
-        $productoAux = new ProductoEnvasado($productoJson->nombre, $productoJson->origen, $productoJson->id, $productoJson->codigoBarra, $productoJson->precio, $productoJson->pathFoto);
-        array_push($arrayProductos, $productoAux);
-    }
-}
-if(isset($_GET[""])){
-           echo "<!DOCTYPE html>
+            echo "<!DOCTYPE html>
         <html lang='es'>
         <head>
             <meta charset='UTF-8'>
@@ -68,7 +51,7 @@ if(isset($_GET[""])){
                     <td>Imagen</td>
                 </tr>
             </thead>";
-        foreach($listado as $producto){
+        foreach($listadoDeBorrados as $producto){
             echo "<tr>";
             echo "<td>" . $producto->nombre . "</td>";
             echo "<td>" . $producto->origen . "</td>";
@@ -82,10 +65,26 @@ if(isset($_GET[""])){
         echo "</table>
         </div>
         </head>
-<body>";
+        <body>";
+
 }
-
-
-return json_encode($retornoJson);
+else{
+    if(ProductoEnvasado::Eliminar($producto_json->id)){
+        $retornoJson->exito = true;
+        $retornoJson->mensaje = "Se elimino de la base de datos.";
+        $producto = new ProductoEnvasado($producto_json->nombre, $producto_json->origen, $producto_json->id, $producto_json->codigoBarra, $producto_json->precio, $producto_json->pathFoto);
+        if($producto->GuardarEnArchivo()){
+            $retornoJson->mensaje .= " Y se almaceno en el archivo con exito";
+        }
+        else{
+            $retornoJson->mensaje .= " Ocurrio un error al guardar en el archivo";
+        }
+    }
+    else{
+        $retornoJson->mensaje = ". El 'id' ingresado no existe";
+    }
+      
+    echo json_encode($retornoJson);
+}
 
 ?>
