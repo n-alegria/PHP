@@ -1,0 +1,7 @@
+{
+    "name": "vendor/mpdf",
+    "description": "Generador de PDF",
+    "require": {
+        "mpdf/mpdf" : "8.*"
+    }
+}
