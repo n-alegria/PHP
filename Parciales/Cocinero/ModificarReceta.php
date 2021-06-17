@@ -8,6 +8,7 @@
 // Se retornará un JSON que contendrá: éxito(bool) y mensaje(string) indicando lo acontecido.
 
 require_once "./clases/Receta.php";
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 $receta_json = isset($_POST['receta_json']) ? json_decode($_POST['receta_json']) : null;
 $foto = isset($_FILES["foto"]["name"]) ? $_FILES["foto"]["name"] : null;

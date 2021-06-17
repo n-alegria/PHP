@@ -132,17 +132,40 @@ class Receta implements IParte1, IParte2, IParte3
         $retornoJson->exito = false;
         $retornoJson->mensaje = "No se pudo guardar en el archivo";
 
-        $ar=fopen("./recetas_borradas.txt","a"); 
+        $archivo = fopen("./recetas_borradas.txt","a"); 
 
-        if($ar != false) {
-            if(fwrite($ar, $this->ToJson()."\r\n")) { 
-                $ext = pathinfo($this->pathFoto, PATHINFO_EXTENSION); 
-                $destino = $this->id.'.'.$this->nombre.'.borrado.'.date('Gis').$ext;
-                move_uploaded_file($_FILES['foto']['tmp_name'], "./recetas/imagenes/" . $this->pathFoto, $destino);               
+        $pathAnterior = $this->pathFoto;
+        $this->pathFoto = $this->id.'.'.$this->nombre.'.borrado.'.date('Gis').'.'.pathinfo($this->pathFoto, PATHINFO_EXTENSION);
+        if($archivo != false) {
+            if(fwrite($archivo, $this->ToJson()."\r\n")) { 
+                $destino = $this->id.'.'.$this->nombre.'.borrado.'.date('Gis').'.'.pathinfo($this->pathFoto, PATHINFO_EXTENSION);
+                copy("./recetas/imagenes/".$pathAnterior, "./recetasBorradas/".$this->pathFoto);
+                unlink("./recetas/imagenes/".$pathAnterior);
             }
-            fclose($ar); 
+            fclose($archivo); 
         }
 
         return $retornoJson;
+    }
+
+    public static function MostrarBorrados()
+    {
+        $listado = array();
+        $path = './recetas_borradas.txt';
+        if(file_exists($path)){
+            $archivo = fopen($path, 'r');
+            if($archivo){
+                while(!feof($archivo)){
+                    $linea = trim(fgets($archivo));
+                    if($linea){
+                        $json = json_decode($linea);
+                        $receta = new Receta($json->id,$json->nombre, $json->ingredientes, $json->tipo, $json->pathFoto);
+                        array_push($listado, $receta);
+                    }
+                }
+            }
+            fclose($archivo);
+        }
+        return $listado;
     }
 }

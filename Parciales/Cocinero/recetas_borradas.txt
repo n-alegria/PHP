@@ -1,0 +1,3 @@
+{"id":"10","nombre":"Pizza","ingredientes":"harina, levadura, agua","tipo":"Panificados","pathFoto":"Pizza.Panificados.195020.jpg"}
+{"id":"11","nombre":"Empanadas","ingredientes":"carne, cebolla, morron","tipo":"Carnes","pathFoto":"11.Empanadas.borrado.195716.jpg"}
+{"id":"12","nombre":"Empanadas","ingredientes":"carne, cebolla, morron","tipo":"Carnes","pathFoto":"12.Empanadas.borrado.195905.jpg"}
